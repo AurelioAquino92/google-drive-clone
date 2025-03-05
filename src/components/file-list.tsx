@@ -1,15 +1,17 @@
-import { File, Folder, MoreVertical } from "lucide-react"
+'use client'
+
 import { Button } from "~/components/ui/button"
+import ItemRow from "./row"
+import type { Folder, File } from "~/lib/mock-data"
 
-const files = [
-  { name: "Document.docx", type: "file", size: "15 KB", modified: "2023-04-01" },
-  { name: "Spreadsheet.xlsx", type: "file", size: "22 KB", modified: "2023-04-02" },
-  { name: "Presentation.pptx", type: "file", size: "1.2 MB", modified: "2023-04-03" },
-  { name: "Images", type: "folder", items: "10 items", modified: "2023-04-04" },
-  { name: "Videos", type: "folder", items: "5 items", modified: "2023-04-05" },
-]
+type FileListProps = {
+  folders: Folder[],
+  files: File[],
+  handleClick: (folder: string) => void
+}
 
-export function FileList() {
+export function FileList( { folders, files, handleClick } : FileListProps) {
+
   return (
     <div className="mt-4">
       <div className="flex items-center justify-between pb-4">
@@ -40,30 +42,10 @@ export function FileList() {
           <div className="col-span-3">Last modified</div>
           <div className="col-span-1"></div>
         </div>
-        {files.map((file, index) => (
-          <div
-            key={index}
-            className="grid grid-cols-12 gap-4 px-4 py-3 items-center hover:bg-accent/50 cursor-pointer border-b border-border last:border-b-0"
-          >
-            <div className="col-span-6 flex items-center space-x-2">
-              {file.type === "file" ? (
-                <File className="h-5 w-5 text-blue-400" />
-              ) : (
-                <Folder className="h-5 w-5 text-yellow-400" />
-              )}
-              <span>{file.name}</span>
-            </div>
-            <div className="col-span-2 text-sm text-muted-foreground">
-              {file.type === "file" ? file.size : file.items}
-            </div>
-            <div className="col-span-3 text-sm text-muted-foreground">{file.modified}</div>
-            <div className="col-span-1 flex justify-end">
-              <Button variant="ghost" size="icon">
-                <MoreVertical className="h-4 w-4" />
-              </Button>
-            </div>
-          </div>
-        ))}
+        {folders.map((folder, index) => <ItemRow item={folder} key={index} handleClick={() => {
+          handleClick(folder.id)
+        }}/> )}
+        {files.map((file, index) => <ItemRow item={file} key={index}/> )}
       </div>
     </div>
   )
