@@ -16,7 +16,7 @@ export function Breadcrumb({ items, handleClick } : BreadcrumbType) {
             onClick={() => handleClick("root")} 
             className="text-muted-foreground hover:text-primary"
           >
-            <Home className="h-4 w-4" />
+            <Home className="h-5 w-5" />
             <span className="sr-only">Home</span>
           </div>
         </li>
