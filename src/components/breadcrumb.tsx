@@ -1,10 +1,10 @@
 import Link from "next/link"
 import { ChevronRight, Home } from "lucide-react"
-import type { Folder } from "~/lib/mock-data"
+import type { folders } from "~/server/db/schema"
 
 type BreadcrumbType = {
-  items: Folder[]
-  handleClick: (folder: string) => void
+  items: (typeof folders.$inferSelect)[]
+  handleClick: (folder: number) => void
 }
 
 export function Breadcrumb({ items, handleClick } : BreadcrumbType) {
@@ -13,7 +13,7 @@ export function Breadcrumb({ items, handleClick } : BreadcrumbType) {
       <ol className="flex items-center space-x-2">
         <li>
           <div
-            onClick={() => handleClick("root")} 
+            onClick={() => handleClick(1)} 
             className="text-muted-foreground hover:text-primary"
           >
             <Home className="h-5 w-5" />

@@ -2,12 +2,12 @@
 
 import { Button } from "~/components/ui/button"
 import ItemRow from "./row"
-import type { Folder, File } from "~/lib/mock-data"
+import type { files, folders } from "~/server/db/schema"
 
 type FileListProps = {
-  folders: Folder[],
-  files: File[],
-  handleClick: (folder: string) => void
+  folders: (typeof folders.$inferSelect)[],
+  files: (typeof files.$inferSelect)[],
+  handleClick: (folder: number) => void
 }
 
 export function FileList( { folders, files, handleClick } : FileListProps) {
