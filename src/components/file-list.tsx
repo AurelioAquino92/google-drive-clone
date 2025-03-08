@@ -2,11 +2,11 @@
 
 import { Button } from "~/components/ui/button"
 import ItemRow from "./row"
-import type { files, folders } from "~/server/db/schema"
+import type { files_table, folders_table } from "~/server/db/schema"
 
 type FileListProps = {
-  folders: (typeof folders.$inferSelect)[],
-  files: (typeof files.$inferSelect)[]
+  folders: (typeof folders_table.$inferSelect)[],
+  files: (typeof files_table.$inferSelect)[]
 }
 
 export function FileList( { folders, files } : FileListProps) {

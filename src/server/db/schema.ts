@@ -8,7 +8,7 @@ export const users = createTable("users", {
   age: int("age")
 })
 
-export const files = createTable(
+export const files_table = createTable(
   "files", 
   {
     id: bigint({ mode: "number", unsigned: true }).primaryKey().autoincrement(),
@@ -23,7 +23,7 @@ export const files = createTable(
   }
 )
 
-export const folders = createTable(
+export const folders_table = createTable(
   "folders", 
   {
     id: bigint({ mode: "number", unsigned: true }).primaryKey().autoincrement(),

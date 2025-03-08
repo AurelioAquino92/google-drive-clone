@@ -1,10 +1,10 @@
 import { File as FileIcon, Folder as FolderIcon, MoreVertical } from "lucide-react";
 import { Button } from "./ui/button";
-import type { files, folders } from "~/server/db/schema";
+import type { files_table, folders_table } from "~/server/db/schema";
 import Link from "next/link";
 
 export default function ItemRow(props: {
-    item : (typeof files.$inferSelect) | (typeof folders.$inferSelect),
+    item : (typeof files_table.$inferSelect) | (typeof folders_table.$inferSelect),
 }) {
     
     const { item } = props

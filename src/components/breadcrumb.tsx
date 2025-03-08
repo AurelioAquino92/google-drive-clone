@@ -1,12 +1,12 @@
 import Link from "next/link"
 import { ChevronRight, Home } from "lucide-react"
-import type { folders } from "~/server/db/schema"
+import type { folders_table } from "~/server/db/schema"
 
 type BreadcrumbType = {
-  folders: (typeof folders.$inferSelect)[]
+  parents: (typeof folders_table.$inferSelect)[]
 }
 
-export function Breadcrumb({ folders } : BreadcrumbType) {
+export function Breadcrumb({ parents } : BreadcrumbType) {
   return (
     <nav className="flex" aria-label="Breadcrumb">
       <ol className="flex items-center space-x-2">
@@ -19,18 +19,18 @@ export function Breadcrumb({ folders } : BreadcrumbType) {
             <span className="sr-only">Home</span>
           </Link>
         </li>
-        {folders.map((folder, index) => (
-          <li key={folder.name}>
+        {parents.map((parent, index) => (
+          <li key={parent.name}>
             <div className="flex items-center">
               <ChevronRight className="h-4 w-4 text-muted-foreground" />
               <Link
-                href={`/f/${folder.id}`}
+                href={`/f/${parent.id}`}
                 className={`ml-2 text-sm font-medium ${
-                  index === folders.length - 1 ? "text-primary" : "text-muted-foreground hover:text-primary"
+                  index === parents.length - 1 ? "text-primary" : "text-muted-foreground hover:text-primary"
                 }`}
-                aria-current={index === folders.length - 1 ? "page" : undefined}
+                aria-current={index === parents.length - 1 ? "page" : undefined}
               >
-                {folder.name}
+                {parent.name}
               </Link>
             </div>
           </li>
