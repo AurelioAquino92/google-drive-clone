@@ -6,11 +6,10 @@ import type { files, folders } from "~/server/db/schema"
 
 type FileListProps = {
   folders: (typeof folders.$inferSelect)[],
-  files: (typeof files.$inferSelect)[],
-  handleClick: (folder: number) => void
+  files: (typeof files.$inferSelect)[]
 }
 
-export function FileList( { folders, files, handleClick } : FileListProps) {
+export function FileList( { folders, files } : FileListProps) {
 
   return (
     <div className="mt-4">
@@ -42,9 +41,7 @@ export function FileList( { folders, files, handleClick } : FileListProps) {
           <div className="col-span-3">Last modified</div>
           <div className="col-span-1"></div>
         </div>
-        {folders.map((folder, index) => <ItemRow item={folder} key={index} handleClick={() => {
-          handleClick(folder.id)
-        }}/> )}
+        {folders.map((folder, index) => <ItemRow item={folder} key={index}/> )}
         {files.map((file, index) => <ItemRow item={file} key={index}/> )}
       </div>
     </div>

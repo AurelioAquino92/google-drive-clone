@@ -13,17 +13,31 @@ export default async function FolderPage(props: {
         return <div>Invalid Folder ID</div>
     }
 
-    const folders = await db
+    const foldersPromise = db
         .select()
         .from(foldersSchema)
-        .where(eq(foldersSchema.parent, parsedFolderId))
-        const files = await db
+        .orderBy(foldersSchema.name)
+    const filesPromise = db
         .select()
         .from(filesSchema)
         .where(eq(filesSchema.parent, parsedFolderId))
+        .orderBy(filesSchema.name)
 
+    const [allFolders, files] = await Promise.all([foldersPromise, filesPromise])
+
+    const folders = allFolders.filter((folder) => folder.parent === parsedFolderId)
+
+    const paths : (typeof foldersSchema.$inferSelect)[] = []
+    let parentId = parsedFolderId
+    while (parentId !== 1) {
+        const foundFolder = allFolders.find((folder) => folder.id === parentId)
+        if (!foundFolder) break
+        paths.unshift(foundFolder)
+        parentId = foundFolder.parent ?? 1
+    }
+    
     return (
-        <DriveContents files={files} folders={folders} />
+        <DriveContents files={files} folders={folders} paths={paths}/>
     )
 
 }

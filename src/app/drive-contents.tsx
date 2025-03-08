@@ -3,34 +3,20 @@
 import { Header } from "~/components/header"
 import { FileList } from "~/components/file-list"
 import { Breadcrumb } from "~/components/breadcrumb"
-import { useMemo, useState } from "react"
-import type { files, folders } from "~/server/db/schema"
+import type { files as filesSchema, folders as foldersSchema } from "~/server/db/schema"
 
 export default function DriveContents(props: {
-  files: typeof files.$inferSelect[],
-  folders: typeof folders.$inferSelect[]
+  files: (typeof filesSchema.$inferSelect)[],
+  folders: (typeof foldersSchema.$inferSelect)[],
+  paths: (typeof foldersSchema.$inferSelect)[]
 }) {
-
-  const [currentFolder, setCurrentFolder] = useState<number>(1)
-  
-  const getBreadcrumbsItems = useMemo(() => {
-    const breadcrumbs : (typeof folders.$inferSelect)[] = []
-    let currentId = currentFolder
-    while (currentId !== 1) {
-      const folderParent = props.folders.find((folder) => folder.id === currentId)
-      if (!folderParent) break
-      breadcrumbs.unshift(folderParent)
-      currentId = folderParent.parent ?? 1
-    }
-    return breadcrumbs
-  }, [currentFolder, props.folders])
   
   return (
     <div className="flex flex-col h-screen">
       <Header />
       <main className="flex-1 p-6">
-        <Breadcrumb items={getBreadcrumbsItems} handleClick={(newRoot) => setCurrentFolder(newRoot)} />
-        <FileList folders={props.folders} files={props.files} handleClick={(newRoot) => setCurrentFolder(newRoot)} />
+        <Breadcrumb folders={props.paths} />
+        <FileList folders={props.folders} files={props.files} />
       </main>
     </div>
   )

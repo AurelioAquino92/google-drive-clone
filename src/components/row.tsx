@@ -1,24 +1,18 @@
 import { File as FileIcon, Folder as FolderIcon, MoreVertical } from "lucide-react";
 import { Button } from "./ui/button";
 import type { files, folders } from "~/server/db/schema";
+import Link from "next/link";
 
 export default function ItemRow(props: {
     item : (typeof files.$inferSelect) | (typeof folders.$inferSelect),
-    handleClick?: () => void
 }) {
     
-    const { item, handleClick } = props
-
-    const onCLickHandler = () => {
-        if (!handleClick) return
-        handleClick()
-    }
-
+    const { item } = props
     const isFile = "size" in item
 
     return (
-        <div
-            onClick={onCLickHandler}
+        <Link
+            href={isFile ? "#" : `/f/${item.id}`}
             className="grid grid-cols-12 gap-4 px-4 py-3 items-center hover:bg-accent/50 cursor-pointer border-b border-border last:border-b-0"
         >
             <div className="col-span-6 flex items-center space-x-2">
@@ -38,6 +32,6 @@ export default function ItemRow(props: {
                     <MoreVertical className="h-4 w-4" />
                 </Button>
             </div>
-        </div>
+        </Link>
     )
 }
