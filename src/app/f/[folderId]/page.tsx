@@ -1,5 +1,5 @@
 import DriveContents from "~/app/drive-contents";
-import { getFiles, getFolders, getParents } from "~/server/db/queries";
+import { QUERIES } from "~/server/db/queries";
 
 export default async function FolderPage(props: {
     params: Promise<{ folderId: string }>
@@ -12,12 +12,12 @@ export default async function FolderPage(props: {
     }
 
     const [allFolders, files] = await Promise.all([
-        getFolders(),
-        getFiles(parsedFolderId)
+        QUERIES.getFolders(),
+        QUERIES.getFiles(parsedFolderId)
     ])
 
     const folders = allFolders.filter((folder) => folder.parent === parsedFolderId)
-    const parents = await getParents(allFolders, parsedFolderId)
+    const parents = await QUERIES.getParents(allFolders, parsedFolderId)
     
     return (
         <DriveContents files={files} folders={folders} parents={parents}/>
