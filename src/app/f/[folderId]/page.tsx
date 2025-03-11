@@ -11,13 +11,12 @@ export default async function FolderPage(props: {
         return <div>Invalid Folder ID</div>
     }
 
-    const [allFolders, files] = await Promise.all([
-        QUERIES.getFolders(),
+    const [foldersData, files] = await Promise.all([
+        QUERIES.getFolders(parsedFolderId),
         QUERIES.getFiles(parsedFolderId)
     ])
 
-    const folders = allFolders.filter((folder) => folder.parent === parsedFolderId)
-    const parents = await QUERIES.getParents(allFolders, parsedFolderId)
+    const { folders, parents } = foldersData
     
     return (
         <DriveContents files={files} folders={folders} parents={parents}/>

@@ -3,12 +3,12 @@
 import { Header } from "~/components/header"
 import { FileList } from "~/components/file-list"
 import { Breadcrumb } from "~/components/breadcrumb"
-import type { files_table as filesSchema, folders_table as foldersSchema } from "~/server/db/schema"
+import type { DB_FileType, DB_FolderType } from "~/server/db/schema"
 
 export default function DriveContents(props: {
-  files: (typeof filesSchema.$inferSelect)[],
-  folders: (typeof foldersSchema.$inferSelect)[],
-  parents: (typeof foldersSchema.$inferSelect)[]
+  files: DB_FileType[],
+  folders: DB_FolderType[],
+  parents: DB_FolderType[]
 }) {
   
   return (

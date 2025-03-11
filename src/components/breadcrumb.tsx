@@ -1,9 +1,9 @@
 import Link from "next/link"
 import { ChevronRight, Home } from "lucide-react"
-import type { folders_table } from "~/server/db/schema"
+import type { DB_FolderType } from "~/server/db/schema"
 
 type BreadcrumbType = {
-  parents: (typeof folders_table.$inferSelect)[]
+  parents: DB_FolderType[]
 }
 
 export function Breadcrumb({ parents } : BreadcrumbType) {

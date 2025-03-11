@@ -12,7 +12,8 @@ export default function ItemRow(props: {
 
     return (
         <Link
-            href={isFile ? "#" : `/f/${item.id}`}
+            href={isFile ? `${item.url}` : `/f/${item.id}`}
+            target={isFile ? "_blank" : undefined}
             className="grid grid-cols-12 gap-4 px-4 py-3 items-center hover:bg-accent/50 cursor-pointer border-b border-border last:border-b-0"
         >
             <div className="col-span-6 flex items-center space-x-2">

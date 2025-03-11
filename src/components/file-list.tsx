@@ -1,38 +1,26 @@
 'use client'
 
-import { Button } from "~/components/ui/button"
 import ItemRow from "./row"
-import type { files_table, folders_table } from "~/server/db/schema"
+import type { DB_FileType, DB_FolderType } from "~/server/db/schema"
+import { UploadButton } from "./uploadthing"
+import { useRouter } from "next/navigation"
 
 type FileListProps = {
-  folders: (typeof folders_table.$inferSelect)[],
-  files: (typeof files_table.$inferSelect)[]
+  folders: DB_FolderType[],
+  files: DB_FileType[]
 }
 
 export function FileList( { folders, files } : FileListProps) {
+
+  const router = useRouter()
 
   return (
     <div className="mt-4">
       <div className="flex items-center justify-between pb-4">
         <h2 className="text-2xl font-semibold">My Drive</h2>
-        <Button>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="lucide lucide-plus mr-2 h-4 w-4"
-          >
-            <path d="M5 12h14" />
-            <path d="M12 5v14" />
-          </svg>
-          New
-        </Button>
+        <UploadButton endpoint="imageUploader" onClientUploadComplete={() => {
+          router.refresh()
+        }} />
       </div>
       <div className="bg-card rounded-lg shadow-md">
         <div className="grid grid-cols-12 gap-4 px-4 py-2 font-semibold text-sm border-b border-border">
