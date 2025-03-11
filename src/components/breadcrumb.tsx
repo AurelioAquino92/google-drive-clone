@@ -12,7 +12,7 @@ export function Breadcrumb({ parents } : BreadcrumbType) {
       <ol className="flex items-center space-x-2">
         <li>
           <Link
-            href={"/f/1"}
+            href={"/"}
             className="text-muted-foreground hover:text-primary"
           >
             <Home className="h-5 w-5" />

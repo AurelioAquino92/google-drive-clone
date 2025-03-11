@@ -10,7 +10,7 @@ import {
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Google Drive Clone",
+  title: "Aurelio's Google Drive Clone",
   description: "A Google Drive clone with dark mode as default",
 }
 

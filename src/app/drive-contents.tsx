@@ -8,7 +8,8 @@ import type { DB_FileType, DB_FolderType } from "~/server/db/schema"
 export default function DriveContents(props: {
   files: DB_FileType[],
   folders: DB_FolderType[],
-  parents: DB_FolderType[]
+  parents: DB_FolderType[],
+  currentFolderId?: number
 }) {
   
   return (
@@ -16,7 +17,7 @@ export default function DriveContents(props: {
       <Header />
       <main className="flex-1 p-6">
         <Breadcrumb parents={props.parents} />
-        <FileList folders={props.folders} files={props.files} />
+        <FileList folders={props.folders} files={props.files} currentFolderId={props.currentFolderId} />
       </main>
     </div>
   )

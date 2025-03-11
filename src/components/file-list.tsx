@@ -4,13 +4,15 @@ import ItemRow from "./row"
 import type { DB_FileType, DB_FolderType } from "~/server/db/schema"
 import { UploadButton } from "./uploadthing"
 import { useRouter } from "next/navigation"
+import NewFolderButton from "./newFolderButton"
 
 type FileListProps = {
   folders: DB_FolderType[],
-  files: DB_FileType[]
+  files: DB_FileType[],
+  currentFolderId?: number
 }
 
-export function FileList( { folders, files } : FileListProps) {
+export function FileList( { folders, files, currentFolderId } : FileListProps) {
 
   const router = useRouter()
 
@@ -18,9 +20,18 @@ export function FileList( { folders, files } : FileListProps) {
     <div className="mt-4">
       <div className="flex items-center justify-between pb-4">
         <h2 className="text-2xl font-semibold">My Drive</h2>
-        <UploadButton endpoint="imageUploader" onClientUploadComplete={() => {
-          router.refresh()
-        }} />
+        <div className="flex gap-2 items-center">
+          <NewFolderButton currentFolderId={currentFolderId}/>
+          <UploadButton
+            input={{
+              folderId: currentFolderId ?? null
+            }} 
+            endpoint="imageUploader" 
+            onClientUploadComplete={() => {
+              router.refresh()
+            }} 
+          />
+        </div>
       </div>
       <div className="bg-card rounded-lg shadow-md">
         <div className="grid grid-cols-12 gap-4 px-4 py-2 font-semibold text-sm border-b border-border">

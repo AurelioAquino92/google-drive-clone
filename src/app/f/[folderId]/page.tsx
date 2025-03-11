@@ -19,7 +19,7 @@ export default async function FolderPage(props: {
     const { folders, parents } = foldersData
     
     return (
-        <DriveContents files={files} folders={folders} parents={parents}/>
+        <DriveContents files={files} folders={folders} parents={parents} currentFolderId={parsedFolderId}/>
     )
 
 }
