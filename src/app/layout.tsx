@@ -6,6 +6,7 @@ import { cn } from "~/lib/utils"
 import {
   ClerkProvider
 } from '@clerk/nextjs'
+import { PostHogProvider } from "./_providers/providers"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -22,7 +23,9 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en" className={cn("dark", inter.className)}>
-        <body className="min-h-screen bg-background font-sans antialiased">{children}</body>
+        <PostHogProvider>
+          <body className="min-h-screen bg-background font-sans antialiased">{children}</body>
+        </PostHogProvider>
       </html>
     </ClerkProvider>
   )
