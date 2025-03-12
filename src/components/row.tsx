@@ -1,14 +1,29 @@
-import { File as FileIcon, Folder as FolderIcon, MoreVertical } from "lucide-react";
+import { File as FileIcon, Folder as FolderIcon, MoreVertical, Trash } from "lucide-react";
 import { Button } from "./ui/button";
-import type { files_table, folders_table } from "~/server/db/schema";
+import type { DB_FileType, DB_FolderType } from "~/server/db/schema";
 import Link from "next/link";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function ItemRow(props: {
-    item : (typeof files_table.$inferSelect) | (typeof folders_table.$inferSelect),
+    item : DB_FileType | DB_FolderType,
 }) {
-    
+    const router = useRouter()
     const { item } = props
     const isFile = "size" in item
+    const [open, setOpen] = useState(false)
+
+    const handleDelete = async (e: React.MouseEvent) => {
+        e.preventDefault()
+        const endpoint = isFile ? "/api/files" : "/api/folders"
+        await fetch(endpoint, {
+            method: "DELETE",
+            body: JSON.stringify({ id: item.id }),
+        })
+        setOpen(false)
+        router.refresh()
+    }
 
     return (
         <Link
@@ -29,9 +44,19 @@ export default function ItemRow(props: {
             </div>
             <div className="col-span-3 text-sm text-muted-foreground">{isFile ? item.createdAt?.toString() : ""}</div>
             <div className="col-span-1 flex justify-end">
-                <Button variant="ghost" size="icon">
-                    <MoreVertical className="h-4 w-4" />
-                </Button>
+                <DropdownMenu open={open} onOpenChange={setOpen}>
+                    <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="icon">
+                            <MoreVertical className="h-4 w-4" />
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                        <DropdownMenuItem onClick={handleDelete} className="text-red-600 focus:text-red-500">
+                            <Trash className="h-4 w-4 mr-2" />
+                            Delete
+                        </DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
             </div>
         </Link>
     )

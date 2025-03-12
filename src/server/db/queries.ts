@@ -1,9 +1,12 @@
 import "server-only"
 
-import { eq, isNull } from "drizzle-orm"
+import { and, eq, isNull } from "drizzle-orm"
 import { db } from "."
 import type { DB_FileType, DB_FolderType } from "./schema"
 import { files_table, folders_table } from "./schema"
+import { UTApi } from "uploadthing/server"
+
+const utApi = new UTApi()
 
 export const QUERIES = {
     getFolders: async (parsedParentId: number | null) => {
@@ -57,6 +60,30 @@ export const MUTATIONS = {
     createFolder: async (folder: Omit<DB_FolderType, "id" | "createdAt">) => {
         return await db.insert(folders_table).values(folder)
     },
+
+    deleteFile: async (id: number, userId: string) => {
+        const [file] = await db.select().from(files_table).where(and(eq(files_table.id, id), eq(files_table.ownerId, userId)))
+        if (!file) {
+            throw new Error("File not found")
+        }
+        await Promise.all([
+            utApi.deleteFiles([file.url.split("/").pop()!]),
+            db.delete(files_table).where(and(eq(files_table.id, id), eq(files_table.ownerId, userId)))
+        ])
+    },
+
+    deleteFolder: async (id: number, userId: string) => {
+        const [folder] = await db.select().from(folders_table).where(and(eq(folders_table.id, id), eq(folders_table.ownerId, userId)))
+        if (!folder) {
+            throw new Error("Folder not found")
+        }
+        const files = await db.select().from(files_table).where(eq(files_table.parent, id))
+        await Promise.all([
+            utApi.deleteFiles(files.map((file) => file.url.split("/").pop()!)),
+            db.delete(files_table).where(eq(files_table.parent, id))
+        ])
+        await db.delete(folders_table).where(and(eq(folders_table.id, id), eq(folders_table.ownerId, userId)))
+    }
 }
 
 
