@@ -1,6 +1,6 @@
 import "server-only"
 
-import { and, eq, isNull } from "drizzle-orm"
+import { and, eq, inArray, isNull } from "drizzle-orm"
 import { db } from "."
 import type { DB_FileType, DB_FolderType } from "./schema"
 import { files_table, folders_table } from "./schema"
@@ -77,12 +77,36 @@ export const MUTATIONS = {
         if (!folder) {
             throw new Error("Folder not found")
         }
-        const files = await db.select().from(files_table).where(eq(files_table.parent, id))
+
+        const findAllContents = async (folderId: number) => {
+            const [files, subfolders] = await Promise.all([
+                db.select().from(files_table).where(eq(files_table.parent, folderId)),
+                db.select().from(folders_table).where(eq(folders_table.parent, folderId))
+            ])
+            
+            let allFiles = [...files]
+            let allFolderIds = [folderId]
+
+            const subfolderContents = await Promise.all(
+                subfolders.map(subfolder => findAllContents(subfolder.id))
+            )
+            allFiles = [...allFiles, ...subfolderContents.flatMap(c => c.files)]
+            allFolderIds = [...allFolderIds, ...subfolderContents.flatMap(c => c.folderIds)]
+
+            return {
+                files: allFiles,
+                folderIds: allFolderIds
+            }
+        }
+
+        const contents = await findAllContents(id)
+
         await Promise.all([
-            utApi.deleteFiles(files.map((file) => file.url.split("/").pop()!)),
-            db.delete(files_table).where(eq(files_table.parent, id))
+            utApi.deleteFiles(contents.files.map(file => file.url.split("/").pop()!)),
+            db.delete(files_table).where(inArray(files_table.parent, contents.folderIds))
         ])
-        await db.delete(folders_table).where(and(eq(folders_table.id, id), eq(folders_table.ownerId, userId)))
+
+        await db.delete(folders_table).where(inArray(folders_table.id, contents.folderIds))
     }
 }
 
