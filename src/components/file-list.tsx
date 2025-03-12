@@ -26,7 +26,7 @@ export function FileList( { folders, files, currentFolderId } : FileListProps) {
             input={{
               folderId: currentFolderId ?? null
             }} 
-            endpoint="imageUploader" 
+            endpoint="driveUploader" 
             onClientUploadComplete={() => {
               router.refresh()
             }} 
