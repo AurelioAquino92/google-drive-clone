@@ -1,7 +1,6 @@
 import Link from "next/link"
-import { ChevronRight, Home, Search } from "lucide-react"
+import { ChevronRight, Home } from "lucide-react"
 import type { DB_FolderType } from "~/server/db/schema"
-import { Input } from "./ui/input"
 
 type BreadcrumbType = {
   parents: DB_FolderType[]

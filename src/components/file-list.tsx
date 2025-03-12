@@ -27,7 +27,7 @@ export function FileList({ folders, files, currentFolderId }: FileListProps) {
       <div className="flex flex-col items-center gap-5 px-2">
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogTrigger asChild>
-            <Button>
+            <Button className="py-5">
               <Plus className="w-4 h-4 mr-2" />
               New Folder
             </Button>
