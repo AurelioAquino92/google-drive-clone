@@ -1,25 +1,21 @@
-import { Search } from "lucide-react"
-import { Input } from "~/components/ui/input"
 import { Button } from "~/components/ui/button"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "~/components/ui/dropdown-menu"
-import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar"
 import { SignedIn, SignedOut, SignInButton, SignUpButton, UserButton } from "@clerk/nextjs"
+import { Search } from "lucide-react"
+import { Input } from "./ui/input"
 
 export function Header() {
   return (
-    <header className="flex items-center justify-between px-6 py-3 border-b border-border bg-background">
-      <div className="flex items-center flex-1">
-        <Search className="w-5 h-5 text-muted-foreground" />
-        <Input type="search" placeholder="Search in Drive" className="ml-2 w-full max-w-md bg-secondary" />
+    <header className="flex items-center justify-between px-10 py-3 border-b border-border bg-background">
+      <div className="w-1/4">
+        <h2 className="text-2xl font-semibold">Aurelio&apos;s Google Drive Clone</h2>
       </div>
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center justify-center w-1/2">
+        <div className="flex items-center w-full max-w-md">
+          <Search className="w-5 h-5 text-muted-foreground" />
+          <Input type="search" placeholder="Search in Drive" className="ml-2 bg-secondary" />
+        </div>
+      </div>
+      <div className="flex items-center justify-end space-x-4 w-1/4">
         <Button variant="ghost" size="icon">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -55,26 +51,6 @@ export function Header() {
             <circle cx="12" cy="12" r="3" />
           </svg>
         </Button>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-              <Avatar className="h-8 w-8">
-                <AvatarImage src="/avatars/01.png" alt="@shadcn" />
-                <AvatarFallback>SC</AvatarFallback>
-              </Avatar>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56" align="end" forceMount>
-            <DropdownMenuLabel className="font-normal">
-              <div className="flex flex-col space-y-1">
-                <p className="text-sm font-medium leading-none">shadcn</p>
-                <p className="text-xs leading-none text-muted-foreground">m@example.com</p>
-              </div>
-            </DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Log out</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
         <SignedOut>
           <SignInButton />
           <SignUpButton />
@@ -86,4 +62,3 @@ export function Header() {
     </header>
   )
 }
-

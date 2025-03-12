@@ -12,7 +12,7 @@ const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   title: "Aurelio's Google Drive Clone",
-  description: "A Google Drive clone with dark mode as default",
+  description: "Just like Google Drive, but worse!",
 }
 
 export default function RootLayout({

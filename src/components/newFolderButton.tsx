@@ -2,7 +2,7 @@ import { Plus } from "lucide-react"
 import { Button } from "./ui/button"
 import { useRouter } from "next/navigation"
 
-export default function NewFolderButton({ currentFolderId }: { currentFolderId?: number }) {
+export default function NewFolderButton({ currentFolderId, name, onSuccess }: { currentFolderId?: number, name: string, onSuccess: () => void }) {
     const router = useRouter()
 
     async function handleClick(e: React.MouseEvent<HTMLButtonElement>) {
@@ -10,11 +10,12 @@ export default function NewFolderButton({ currentFolderId }: { currentFolderId?:
         const response = await fetch("/api/folders", {
             method: "POST",
             body: JSON.stringify({
-                name: "New Folder",
+                name: name,
                 parent: currentFolderId ?? null
             }),
         })
         await response.json()
+        onSuccess()
         router.refresh()
     }
 
