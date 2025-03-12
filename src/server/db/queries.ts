@@ -9,6 +9,7 @@ import { UTApi } from "uploadthing/server"
 const utApi = new UTApi()
 
 export const QUERIES = {
+    // TODO: Access control
     getFolders: async (parsedParentId: number | null) => {
         const allFolders = await db
             .select()

@@ -2,6 +2,7 @@ import { Plus } from "lucide-react"
 import { Button } from "./ui/button"
 import { useRouter } from "next/navigation"
 
+// TODO: Loading states
 export default function NewFolderButton({ currentFolderId, name, onSuccess }: { currentFolderId?: number, name: string, onSuccess: () => void }) {
     const router = useRouter()
 
