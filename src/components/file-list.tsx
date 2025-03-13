@@ -68,8 +68,8 @@ export function FileList({ folders, files, currentFolderId }: FileListProps) {
           <div className="col-span-3">Last modified</div>
           <div className="col-span-1"></div>
         </div>
-        {folders.map((folder, index) => <ItemRow item={folder} key={index} />)}
-        {files.map((file, index) => <ItemRow item={file} key={index} />)}
+        {folders.map((folder) => <ItemRow item={folder} key={folder.id} />)}
+        {files.map((file) => <ItemRow item={file} key={file.id} />)}
       </div>
     </div>
   )

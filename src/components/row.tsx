@@ -18,24 +18,20 @@ export default function ItemRow(props: {
     const handleDelete = async (e: React.MouseEvent) => {
         e.preventDefault()
         setIsDeleting(true)
-        try {
-            const endpoint = isFile ? "/api/files" : "/api/folders"
-            await fetch(endpoint, {
-                method: "DELETE",
-                body: JSON.stringify({ id: item.id }),
-            })
-            setOpen(false)
-            router.refresh()
-        } finally {
-            setIsDeleting(false)
-        }
+        const endpoint = isFile ? "/api/files" : "/api/folders"
+        await fetch(endpoint, {
+            method: "DELETE",
+            body: JSON.stringify({ id: item.id }),
+        })
+        setOpen(false)
+        router.refresh()
     }
 
     return (
         <Link
             href={isFile ? `${item.url}` : `/f/${item.id}`}
             target={isFile ? "_blank" : undefined}
-            className="grid grid-cols-12 gap-4 px-4 py-3 items-center hover:bg-accent/50 cursor-pointer border-b border-border last:border-b-0"
+            className={`grid grid-cols-12 gap-4 px-4 py-3 items-center hover:bg-accent/50 cursor-pointer border-b border-border last:border-b-0 ${isDeleting ? "opacity-50 cursor-not-allowed" : ""}`}
         >
             <div className="col-span-6 flex items-center space-x-2">
                 {isFile ? (
