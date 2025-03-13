@@ -16,6 +16,7 @@ export default function ItemRow(props: {
     const [open, setOpen] = useState(false)
     const [isDeleting, setIsDeleting] = useState(false)
     const [showDeleteDialog, setShowDeleteDialog] = useState(false)
+    const [linkClicked, setLinkClicked] = useState(false)
 
     const handleDelete = async () => {
         setIsDeleting(true)
@@ -34,13 +35,14 @@ export default function ItemRow(props: {
             <Link
                 href={isFile ? `${item.url}` : `/f/${item.id}`}
                 target={isFile ? "_blank" : undefined}
+                onClick={() => setLinkClicked(true)}
                 className={`grid grid-cols-12 gap-4 px-4 py-3 items-center hover:bg-accent/50 cursor-pointer border-b border-border last:border-b-0 ${isDeleting ? "opacity-50 cursor-not-allowed" : ""}`}
             >
                 <div className="col-span-6 flex items-center space-x-2">
                     {isFile ? (
-                        <FileIcon className="h-5 w-5 text-blue-400" />
+                        <FileIcon className={`h-5 w-5 text-blue-400`} />
                     ) : (
-                        <FolderIcon className="h-5 w-5 text-yellow-400" />
+                        <FolderIcon className={`h-5 w-5 text-yellow-400 ${linkClicked ? "animate-bounce" : ""}`} />
                     )}
                     <span>{item.name}</span>
                 </div>
