@@ -5,15 +5,23 @@ import { db } from "."
 import type { DB_FileType, DB_FolderType } from "./schema"
 import { files_table, folders_table } from "./schema"
 import { UTApi } from "uploadthing/server"
+import { auth } from "@clerk/nextjs/server"
 
 const utApi = new UTApi()
 
 export const QUERIES = {
-    // TODO: Access control
+    
     getFolders: async (parsedParentId: number | null) => {
+
+        const session = await auth()
+        if (!session.userId) {
+            throw new Error("User not found")
+        }
+
         const allFolders = await db
             .select()
             .from(folders_table)
+            .where(eq(folders_table.ownerId, session.userId))
             .orderBy(folders_table.name)
 
         const folders = allFolders.filter((folder) => folder.parent === parsedParentId)
@@ -34,10 +42,16 @@ export const QUERIES = {
     },
 
     getFiles: async (parsedFolderId: number | null) => {
+        
+        const session = await auth()
+        if (!session.userId) {
+            throw new Error("User not found")
+        }
+
         return db
             .select()
             .from(files_table)
-            .where(parsedFolderId ? eq(files_table.parent, parsedFolderId) : isNull(files_table.parent))
+            .where(and(parsedFolderId ? eq(files_table.parent, parsedFolderId) : isNull(files_table.parent), eq(files_table.ownerId, session.userId)))
             .orderBy(files_table.name)
     },
 
