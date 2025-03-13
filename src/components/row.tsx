@@ -13,16 +13,22 @@ export default function ItemRow(props: {
     const { item } = props
     const isFile = "size" in item
     const [open, setOpen] = useState(false)
+    const [isDeleting, setIsDeleting] = useState(false)
 
     const handleDelete = async (e: React.MouseEvent) => {
         e.preventDefault()
-        const endpoint = isFile ? "/api/files" : "/api/folders"
-        await fetch(endpoint, {
-            method: "DELETE",
-            body: JSON.stringify({ id: item.id }),
-        })
-        setOpen(false)
-        router.refresh()
+        setIsDeleting(true)
+        try {
+            const endpoint = isFile ? "/api/files" : "/api/folders"
+            await fetch(endpoint, {
+                method: "DELETE",
+                body: JSON.stringify({ id: item.id }),
+            })
+            setOpen(false)
+            router.refresh()
+        } finally {
+            setIsDeleting(false)
+        }
     }
 
     return (
@@ -46,14 +52,14 @@ export default function ItemRow(props: {
             <div className="col-span-1 flex justify-end">
                 <DropdownMenu open={open} onOpenChange={setOpen}>
                     <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="icon">
+                        <Button variant="ghost" size="icon" disabled={isDeleting}>
                             <MoreVertical className="h-4 w-4" />
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
-                        <DropdownMenuItem onClick={handleDelete} className="text-red-600 focus:text-red-500">
+                        <DropdownMenuItem onClick={handleDelete} className="text-red-600 focus:text-red-500" disabled={isDeleting}>
                             <Trash className="h-4 w-4 mr-2" />
-                            Delete
+                            {isDeleting ? "Deleting..." : "Delete Forever Now"}
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
