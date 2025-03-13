@@ -1,9 +1,17 @@
+import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 import DriveContents from "~/app/drive-contents";
 import { QUERIES } from "~/server/db/queries";
 
 export default async function FolderPage(props: {
     params: Promise<{ folderId: string }>
 }) {
+
+    const session = await auth()
+
+    if (!session.userId) {
+        return redirect("/getstarted")
+    }
 
     const params = await props.params
     const parsedFolderId = parseInt(params.folderId)
@@ -17,9 +25,9 @@ export default async function FolderPage(props: {
     ])
 
     const { folders, parents } = foldersData
-    
+
     return (
-        <DriveContents files={files} folders={folders} parents={parents} currentFolderId={parsedFolderId}/>
+        <DriveContents files={files} folders={folders} parents={parents} currentFolderId={parsedFolderId} />
     )
 
 }

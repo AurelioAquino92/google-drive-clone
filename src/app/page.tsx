@@ -1,7 +1,15 @@
+import { redirect } from "next/navigation";
 import DriveContents from "./drive-contents";
 import { QUERIES } from "~/server/db/queries";
-// TODO: True Home Page
+import { auth } from "@clerk/nextjs/server";
+
 export default async function HomePage() {
+
+  const session = await auth()
+
+  if (!session.userId) {
+    return redirect("/getstarted")
+  }
 
   const [foldersData, files] = await Promise.all([
     QUERIES.getFolders(null), 

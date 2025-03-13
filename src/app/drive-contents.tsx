@@ -13,7 +13,7 @@ export default function DriveContents(props: {
 }) {
   
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-screen bg-gradient-to-br from-black via-slate-950 to-black">
       <Header />
       <main className="flex-1 p-6">
         <Breadcrumb parents={props.parents} />
