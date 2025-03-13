@@ -1,6 +1,6 @@
 import "server-only"
 
-import { and, eq, inArray, isNull } from "drizzle-orm"
+import { and, eq, inArray, isNull, like } from "drizzle-orm"
 import { db } from "."
 import type { DB_FileType, DB_FolderType } from "./schema"
 import { files_table, folders_table } from "./schema"
@@ -61,6 +61,42 @@ export const QUERIES = {
             .from(folders_table)
             .where(eq(folders_table.id, parsedFolderId))
         return folders[0]
+    },
+
+    searchContents: async (searchQuery: string) => {
+        const session = await auth()
+        if (!session.userId) {
+            throw new Error("User not found")
+        }
+
+        const searchPattern = `%${searchQuery}%`
+
+        const matchingFiles = await db
+            .select()
+            .from(files_table)
+            .where(
+                and(
+                    eq(files_table.ownerId, session.userId),
+                    like(files_table.name, searchPattern)
+                )
+            )
+            .orderBy(files_table.name)
+
+        const matchingFolders = await db
+            .select()
+            .from(folders_table)
+            .where(
+                and(
+                    eq(folders_table.ownerId, session.userId),
+                    like(folders_table.name, searchPattern)
+                )
+            )
+            .orderBy(folders_table.name)
+
+        return {
+            files: matchingFiles,
+            folders: matchingFolders
+        }
     }
 }
 
