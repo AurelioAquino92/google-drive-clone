@@ -65,7 +65,7 @@ export function FileList({ folders, files, currentFolderId }: FileListProps) {
         <div className="grid grid-cols-12 gap-4 px-4 py-2 font-semibold text-sm border-b border-border">
           <div className="col-span-6">Name</div>
           <div className="col-span-2">Size</div>
-          <div className="col-span-3">Last modified</div>
+          <div className="col-span-3">Created At</div>
           <div className="col-span-1"></div>
         </div>
         {folders.map((folder) => <ItemRow item={folder} key={folder.id} />)}

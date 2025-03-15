@@ -6,6 +6,15 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "./ui/dialog";
+import { format } from "date-fns";
+
+const formatBytes = (bytes: number): string => {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`;
+};
 
 export default function ItemRow(props: {
     item : DB_FileType | DB_FolderType,
@@ -47,9 +56,11 @@ export default function ItemRow(props: {
                     <span>{item.name}</span>
                 </div>
                 <div className="col-span-2 text-sm text-muted-foreground">
-                    {isFile ? item.size : ""}
+                    {isFile && item.size ? formatBytes(Number(item.size)) : "-"}
                 </div>
-                <div className="col-span-3 text-sm text-muted-foreground">{isFile ? item.createdAt?.toString() : ""}</div>
+                <div className="col-span-3 text-sm text-muted-foreground">
+                    {item.createdAt ? format(new Date(item.createdAt), 'MMM dd, yyyy HH:mm') : ""}
+                </div>
                 <div className="col-span-1 flex justify-end">
                     <DropdownMenu open={open} onOpenChange={setOpen}>
                         <DropdownMenuTrigger asChild>
