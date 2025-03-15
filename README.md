@@ -1,29 +1,126 @@
-# Create T3 App
+# Google Drive Clone
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+A modern, feature-rich Google Drive clone built with Next.js 15, TypeScript, and Tailwind CSS. This application provides a familiar interface for file storage and management, with real-time updates and a responsive design.
 
-## What's next? How do I make an app with this?
+## 🚀 Features
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+- **Authentication** - Secure user authentication powered by Clerk
+- **File Management** - Upload, download, and organize files
+- **Real-time Updates** - Instant file system changes using modern React
+- **Responsive Design** - Beautiful UI that works on all devices
+- **Modern Stack** - Built with Next.js 15, TypeScript, and Tailwind CSS
+- **Database Integration** - Powered by Drizzle ORM with LibSQL
+- **File Upload** - Seamless file uploads using UploadThing
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+## 🛠️ Tech Stack
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Drizzle](https://orm.drizzle.team)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+- **Framework:** ⚡ Next.js 15
+- **Language:** 🔷 TypeScript
+- **Styling:** 🎨 Tailwind CSS
+- **Authentication:** 🔐 Clerk
+- **Database:** 🐘 PostgreSQL (SingleStore)
+- **UI Components:** 🎭 shadcn/ui
+- **File Upload:** 📤 UploadThing
+- **Deployment:** 🚀 Netlify
+- **Package Manager:** 📦 npm
 
-## Learn More
+## 🚦 Getting Started
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+### Prerequisites
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+- Node.js (v18 or higher)
+- npm (v10 or higher)
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+### Installation
 
-## How do I deploy this?
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/google-drive-clone.git
+cd google-drive-clone
+```
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+2. Install dependencies:
+```bash
+npm install
+```
+
+3. Copy the example environment file:
+```bash
+cp .env.example .env
+```
+
+4. Update the environment variables in `.env` with your credentials
+
+5. Run the development server:
+```bash
+npm run dev
+```
+
+The application will be available at `http://localhost:3000`
+
+## 📝 Environment Variables
+
+Make sure to set up the following environment variables in your `.env` file:
+
+- `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` - Clerk public key
+- `CLERK_SECRET_KEY` - Clerk secret key
+- `DATABASE_URL` - Your LibSQL database URL
+- `UPLOADTHING_SECRET` - UploadThing secret key
+- `UPLOADTHING_APP_ID` - UploadThing app ID
+
+## 🛠️ Development
+
+```bash
+# Run development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Start production server
+npm run start
+
+# Run linter
+npm run lint
+
+# Format code
+npm run format:write
+
+# Check types
+npm run typecheck
+```
+
+## 📚 Database Management
+
+```bash
+# Generate database schema
+npm run db:generate
+
+# Push schema changes
+npm run db:push
+
+# Run database migrations
+npm run db:migrate
+
+# Open database studio
+npm run db:studio
+```
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 🙏 Acknowledgments
+
+- Next.js team for the amazing framework
+- Netlify for the deployment platform
+- Theo ([@t3dotgg](https://twitter.com/t3dotgg) / [Theo on YouTube](https://youtube.com/@t3dotgg)) for the amazing T3 stack and inspiration
+- All the open-source contributors
+
+---
+
+Built with ❤️ using Next.js and TypeScript
