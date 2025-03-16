@@ -46,3 +46,21 @@ export async function DELETE(request: Request) {
         return new NextResponse("Internal Server Error", { status: 500 })
     }
 }
+
+export async function PATCH(request: Request) {
+    try {
+        const session = await auth()
+        if (!session.userId) {
+            return new NextResponse("Unauthorized", { status: 401 })
+        }
+
+        const { id, name } = await request.json() as { id: number, name: string }
+
+        await MUTATIONS.renameFolder(id, name, session.userId)
+
+        return NextResponse.json({ success: true })
+    } catch (error) {
+        console.error("Error renaming folder:", error)
+        return new NextResponse("Internal Server Error", { status: 500 })
+    }
+}

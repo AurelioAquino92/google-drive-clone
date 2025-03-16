@@ -112,6 +112,16 @@ export const MUTATIONS = {
         return await db.insert(folders_table).values(folder)
     },
 
+    renameFolder: async (id: number, newName: string, userId: string) => {
+        const [folder] = await db.select().from(folders_table).where(and(eq(folders_table.id, id), eq(folders_table.ownerId, userId)))
+        if (!folder) {
+            throw new Error("Folder not found")
+        }
+        return await db.update(folders_table)
+            .set({ name: newName })
+            .where(and(eq(folders_table.id, id), eq(folders_table.ownerId, userId)))
+    },
+
     deleteFile: async (id: number, userId: string) => {
         const [file] = await db.select().from(files_table).where(and(eq(files_table.id, id), eq(files_table.ownerId, userId)))
         if (!file) {
